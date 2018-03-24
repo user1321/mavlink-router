@@ -538,14 +538,13 @@ int UartEndpoint::open(const char *path)
     }
 
     /* set DTR/RTS */
-    // Ed: Commented this out because Rock64 UART /dev/ttyFIQ0 causes errors when trying to set the DTR/RTS
-    /*
+    // Changed to log a warning because Rock64 UART /dev/ttyFIQ0 causes exit when trying to set the DTR/RTS but otherwise works fine
     if (ioctl(fd, TIOCMBIS, &bit_dtr) == -1 ||
         ioctl(fd, TIOCMBIS, &bit_rts) == -1) {
-        log_error("Could not set DTR/RTS (%m)");
-        goto fail;
+        log_warning("Could not set DTR/RTS (%m)");
+        //goto fail;
     }
-    */
+    
     if (ioctl(fd, TCFLSH, TCIOFLUSH) == -1) {
         log_error("Could not flush terminal (%m)");
         goto fail;
